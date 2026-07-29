@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071411">
+  <meta name="description" content="AquaTracker – Aquarium-Pflege, Kalender, Wasserwerte, Produkte und Fototagebuch.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+  <title>AquaTracker 2.2</title>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-icon" aria-hidden="true">🌿</div>
+      <div>
+        <h1>AquaTracker</h1>
+        <div class="version">Version 2.2</div>
+      </div>
+    </div>
+    <button id="installBtn" class="icon-btn hidden" type="button" title="App installieren">⬇️</button>
+  </header>
+
+  <main id="app" class="app-shell">
+    <section id="view-dashboard" class="view active">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">MEINE AQUARIEN</p>
+          <h2>Alles im Blick</h2>
+          <p>Pflege, Werte, Produkte und Fotos – auch offline.</p>
+        </div>
+        <button class="primary" data-action="new-aquarium">＋ Aquarium</button>
+      </div>
+
+      <div id="dashboardSummary" class="summary-grid"></div>
+
+      <div class="section-head">
+        <h2>Aquarien</h2>
+        <button class="ghost small" data-action="sort-aquariums">Sortierung</button>
+      </div>
+      <div id="aquariumList" class="aquarium-list empty-state"></div>
+
+      <div class="section-head">
+        <h2>Flaschenbestand</h2>
+        <button class="ghost small" data-nav="products">Verwalten</button>
+      </div>
+      <div id="inventoryPreview" class="inventory-grid"></div>
+    </section>
+
+    <section id="view-calendar" class="view">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">KALENDER</p>
+          <h2 id="calendarTitle">Monat</h2>
+        </div>
+        <div class="row">
+          <button id="prevMonth" class="icon-btn" aria-label="Vorheriger Monat">‹</button>
+          <button id="todayMonth" class="ghost small">Heute</button>
+          <button id="nextMonth" class="icon-btn" aria-label="Nächster Monat">›</button>
+        </div>
+      </div>
+      <div id="calendarGrid" class="calendar-grid"></div>
+      <div class="section-head"><h2>Ereignisse</h2></div>
+      <div id="calendarEvents" class="history-list"></div>
+    </section>
+
+    <section id="view-history" class="view">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">HISTORIE</p>
+          <h2>Alle Ereignisse</h2>
+        </div>
+        <select id="historyFilter" class="select compact"></select>
+      </div>
+      <div id="historyList" class="history-list"></div>
+    </section>
+
+    <section id="view-products" class="view">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">PRODUKTE</p>
+          <h2>Produktkatalog</h2>
+        </div>
+        <button class="primary small" data-action="new-product">＋ Eigenes Produkt</button>
+      </div>
+      <p class="muted">„Verwendet“ zeigt das Produkt bei Reinigungen. „Bestand“ aktiviert die Flaschen- oder Packungsverfolgung.</p>
+      <div id="productList" class="product-list"></div>
+    </section>
+
+    <section id="view-settings" class="view">
+      <p class="eyebrow">EINSTELLUNGEN</p>
+      <h2>App konfigurieren</h2>
+
+      <article class="panel">
+        <h3>Wasseranalyse</h3>
+        <p class="muted">Wähle aus, welche Werte bei einer Analyse erscheinen.</p>
+        <div id="analysisSettings" class="check-grid"></div>
+      </article>
+
+      <article class="panel">
+        <h3>Dashboard-Sortierung</h3>
+        <select id="sortMode" class="select">
+          <option value="custom">Benutzerdefiniert (Drag & Drop)</option>
+          <option value="name">Alphabetisch</option>
+          <option value="volume">Nach Größe</option>
+          <option value="due">Nach nächster Fälligkeit</option>
+          <option value="health">Nach Pflegezustand</option>
+          <option value="created">Nach Erstellungsdatum</option>
+        </select>
+      </article>
+
+      <article class="panel">
+        <h3>Daten</h3>
+        <div class="button-stack">
+          <button class="ghost" data-action="export-data">Daten exportieren</button>
+          <label class="ghost file-label">Daten importieren<input id="importFile" type="file" accept="application/json"></label>
+          <button class="danger" data-action="reset-data">Alle Daten löschen</button>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h3>Shop</h3>
+        <button class="ghost" data-action="open-shop">Dennerle-Webseite öffnen ↗</button>
+      </article>
+    </section>
+  </main>
+
+  <div id="quickActions" class="quick-actions hidden">
+    <button data-action="new-event" data-type="cleaning"><span>🧽</span>Reinigung</button>
+    <button data-action="new-event" data-type="filter"><span>🧰</span>Filter</button>
+    <button data-action="new-event" data-type="analysis"><span>🧪</span>Analyse</button>
+  </div>
+
+  <nav class="bottom-nav" aria-label="Hauptnavigation">
+    <button class="active" data-nav="dashboard"><span>🏠</span>Dashboard</button>
+    <button data-nav="calendar"><span>📅</span>Kalender</button>
+    <button data-nav="history"><span>🕘</span>Historie</button>
+    <button data-nav="products"><span>🧴</span>Produkte</button>
+    <button data-nav="settings"><span>⚙️</span>Einstellungen</button>
+  </nav>
+
+  <dialog id="modal" class="modal">
+    <form method="dialog" class="modal-card" id="modalForm">
+      <div class="modal-head">
+        <h2 id="modalTitle">Dialog</h2>
+        <button class="icon-btn" value="cancel" aria-label="Schließen">✕</button>
+      </div>
+      <div id="modalBody"></div>
+      <div id="modalActions" class="modal-actions"></div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
